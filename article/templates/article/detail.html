@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ article.article_title }}</title>
+</head>
+<body>
+
+  <h1>{{ article.article_title }}</h1>
+    <span>{{ article.article_date }}</span>
+    <p>{{ article.article_text }}</p>
+    <a href="{% url 'article:index' %}">back</a>
+</body>
+</html>
