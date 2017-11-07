@@ -12,13 +12,6 @@ class Article(models.Model):
     article_text = models.TextField()
     article_date = models.DateTimeField()
     article_likes = models.IntegerField(default = 0)
-
-    def was_published_recently(self):
-        return self.article_date >= timezone.now() - datetime.timedelta(days=1)
-    was_published_recently.admin_order_field = 'article_date'
-    was_published_recently.boolean = True
-    was_published_recently.short_description = 'Published recently?'
-
     def __str__(self):
         return smart_text(self.article_title)
 
