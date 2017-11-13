@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.encoding import smart_text
 from django.utils.encoding import python_2_unicode_compatible
-
+from datetime import datetime
 import datetime
 from django.utils import timezone
 
@@ -12,9 +12,9 @@ class Article(models.Model):
 
     article_title = models.CharField(max_length=200)
     article_subheading = models.CharField(max_length=200)
-    article_img = models.CharField(max_length=200)
+    article_img = models.CharField(max_length=200, default="/img/post-bg-1.jpg")
     article_text = models.TextField()
-    article_date = models.DateTimeField()
+    article_date = models.DateTimeField(default=datetime.date.today)
     article_likes = models.IntegerField(default=0)
 
     def __str__(self):

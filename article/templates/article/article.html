@@ -2,13 +2,13 @@
 {% load staticfiles %}
 
 {% block article %}
-  <header class="masthead" style="background-image: url('{% static '/img/post-bg-1.jpg' %}')">
+  <header class="masthead" style="background-image: url('{% static '{{article.article_img}}' %}')">
     <div class="overlay"></div>
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
           <div class="post-heading">
-            <h1>{{ article.article_title }}</h1>
+            <h1>{{ article.article_title }} </h1>
             <h2 class="subheading">{{ article.article_subheading }}</h2>
             <span class="meta">Posted on {{ article.article_date }}</span>
             <span class="meta">
@@ -16,6 +16,13 @@
                 <span class="fa-stack fa-lg">
                   <i class="fa fa-thumbs-up"></i>
                    {{ article.article_likes }}
+                </span>
+              </a>
+            </span>
+            <span class="meta">
+              <a href="/edit_article/{{ article.id }}/">
+                <span class="fa-stack fa-lg">
+                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                 </span>
               </a>
             </span>
@@ -28,6 +35,7 @@
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
         <article>
+          <a class="btn btn-default" href="#"><span class="glyphicon glyphicon-pencil"></span></a>
           <p>{{ article.article_text }}</p>
         </article>
         <h2>Comments</h2>
