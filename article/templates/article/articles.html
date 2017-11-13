@@ -33,7 +33,10 @@
                     </h3>
                   </a>
                   <span class="meta">Posted on {{ article.article_date }}</span>
-                  <span class="meta">Likes: {{ article.article_likes }}</span>
+                  <div class="meta">
+                      <i class="fa fa-thumbs-up"></i>
+                       {{ article.article_likes }}
+                  </div>
                 </div>
             {% endfor %}
 
