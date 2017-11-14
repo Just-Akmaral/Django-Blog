@@ -1,18 +1,17 @@
-from django.shortcuts import get_object_or_404, render, redirect, render_to_response
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.views import LoginView, LogoutView
+from django.shortcuts import get_object_or_404, render, redirect
 from django.http import Http404, HttpResponseRedirect
-from django.template.context_processors import csrf
 from django.views import generic
 from django.utils import timezone
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
-
+from django.contrib.auth.forms import AuthenticationForm
 from django.views.generic.edit import FormView
-
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from .models import Article, Comments
-
-from .forms import CommentForm, PostForm
+from .forms import CommentForm, PostForm, AuthenticationForm, SignUpForm
 
 
 class ArticlesView(generic.ListView):
@@ -109,3 +108,32 @@ def add_comment(request, article_id):
     return render(request, 'article/article.html', {
         'form': form
     })
+
+
+class LoginView(LoginView):
+    template_name = 'article/login.html'
+    authentication_form = AuthenticationForm
+
+    def get_success_url(self):
+        return reverse('article:articles')
+
+
+class LogoutView(LogoutView):
+    def get_next_page(self):
+        return reverse('article:articles')
+
+
+
+def signup(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+            return redirect('article:articles')
+    else:
+        form = SignUpForm()
+    return render(request, 'article/signup.html', {'form': form})

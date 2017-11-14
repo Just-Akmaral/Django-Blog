@@ -1,9 +1,12 @@
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.utils.encoding import smart_text
 from django.utils.encoding import python_2_unicode_compatible
 from datetime import datetime
 import datetime
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 
 class Article(models.Model):
@@ -30,3 +33,15 @@ class Comments(models.Model):
 
     def __str__(self):
         return self.comments_text
+
+
+# class Profile(models.Model):
+#     user = models.OneToOneField(User, on_delete=models.CASCADE)
+#     location = models.CharField(max_length=30, blank=True)
+#
+#
+# @receiver(post_save, sender=User)
+# def update_user_profile(sender, instance, created, **kwargs):
+#     if created:
+#         Profile.objects.create(user=instance)
+#     instance.profile.save()
