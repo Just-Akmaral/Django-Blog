@@ -1,0 +1,39 @@
+{% extends 'main.html' %}
+{% load staticfiles %}
+
+{% block article %}
+  <header class="masthead" style="background-image: url('{% static '/img/add-article-bg.jpg' %}')">
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <div class="page-heading">
+          <h1>Article</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+            <p>Want something awesome? Fill out the form below!</p>
+          <form action=""  method="post" name="sentMessage" id="contactForm" novalidate>
+            {% csrf_token %}
+                {% for fields in form %}
+                    <div class="control-group">
+                        <div class="form-group col-xs-12 floating-label-form-group controls">
+                            {{ fields }}
+                        </div>
+                    </div>
+                {% endfor %}
+                       <!--{{ form.as_p }}-->
+                <br>
+              <div class="form-group">
+                  <button type="submit" class="btn btn-primary" id="sendMessageButton">Send</button>
+              </div>
+          </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}
