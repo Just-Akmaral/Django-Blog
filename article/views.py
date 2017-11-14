@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import get_object_or_404, render, redirect
 from django.http import Http404, HttpResponseRedirect
@@ -57,7 +58,7 @@ class AboutView(generic.TemplateView):
     def __unicode__(self):
         return self.title
 
-
+@login_required(login_url='/login/')
 def addLike(request, article_id):
     article = get_object_or_404(Article, pk=article_id)
     try:
@@ -67,7 +68,7 @@ def addLike(request, article_id):
         raise Http404
     return HttpResponseRedirect(reverse('article:article', args=(article.id,)))
 
-
+@login_required(login_url='/login/')
 def add_article(request):
     if request.method == 'POST':
         form = PostForm(request.POST)
@@ -80,7 +81,7 @@ def add_article(request):
         form = PostForm()
     return render(request, 'article/edit_article.html', {'form': form})
 
-
+@login_required(login_url='/login/')
 def edit_article(request, article_id):
     article = get_object_or_404(Article, pk=article_id)
     if request.method == "POST":
@@ -94,7 +95,7 @@ def edit_article(request, article_id):
         form = PostForm(instance=article)
     return render(request, 'article/edit_article.html', {'form': form})
 
-
+@login_required(login_url='/login/')
 def add_comment(request, article_id):
     if request.method == 'POST':
         form = CommentForm(request.POST)

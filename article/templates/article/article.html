@@ -2,7 +2,7 @@
 {% load staticfiles %}
 
 {% block article %}
-  <header class="masthead" style="background-image: url('{% static '{{article.article_img}}' %}')">
+  <header class="masthead" style="background-image: url('{{ article.article_img}}')">
     <div class="overlay"></div>
     <div class="container">
       <div class="row">
@@ -19,6 +19,7 @@
                 </span>
               </a>
             </span>
+            {% if user.is_authenticated %}
             <span class="meta">
               <a href="/edit_article/{{ article.id }}/">
                 <span class="fa-stack fa-lg">
@@ -26,6 +27,7 @@
                 </span>
               </a>
             </span>
+            {% endif %}
           </div>
         </div>
       </div>
@@ -39,6 +41,7 @@
           <p>{{ article.article_text }}</p>
         </article>
         <h2>Comments</h2>
+        {% if user.is_authenticated %}
           <form action="/add_comment/{{ article.id }}/"  method="post" name="sentMessage" id="contactForm" novalidate>
             {% csrf_token %}
                 <div class="control-group">
@@ -55,11 +58,22 @@
                   <button type="submit" class="btn btn-primary" id="sendMessageButton">Send</button>
                 </div>
           </form>
+          {% else %}
+          <p> Only authorised users can add comments </p>
+          {% endif %}
         <hr>
           {% if comments_list %}
-              {% for comments in comments_list %}
-                <p>{{ comments.comments_text }}</p>
-              {% endfor %}
+              <div class="container">
+                  {% for comments in comments_list %}
+                      <div class="row">
+                          <article>
+                              <h4 class="media-heading user_name">User's name</h4>
+                              <span class="meta">Posted on {{ comments.comments_date }}</span>
+                              <p>{{ comments.comments_text }}</p>
+                          </article>
+                      </div>
+                  {% endfor %}
+              </div>
           {% else %}
                 <p>No comments are available.</p>
           {% endif %}

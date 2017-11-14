@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
@@ -36,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'tinymce',
 ]
 
 MIDDLEWARE = [
@@ -119,3 +122,14 @@ STATICFILES_DIRS = [
 ]
 
 LOGIN_REDIRECT_URL = 'home'
+
+TINYMCE_ROOT = os.path.join(BASE_DIR, 'static/tinymce/')
+
+TINYMCE_JS_URL = os.path.join(STATIC_URL, '/tinymce/tinymce.min.js')
+
+# TINYMCE_DEFAULT_CONFIG = {
+#     'plugins' :'table, spellchecker, paste, searchreplace"
+#     'theme' : "advanced",
+#     'cleanup_on_startup ':True ,
+#     'custom_undo_redo_levels':10 ,
+# }
