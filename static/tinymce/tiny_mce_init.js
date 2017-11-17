@@ -8,5 +8,10 @@ tinyMCE.init({
     theme_advanced_toolbar_location : "top",
     theme_advanced_toolbar_align : "left",
     theme_advanced_statusbar_location : "bottom",
-    theme_advanced_resizing : true
+forced_root_block : false,
+    force_p_newlines : false,
+    remove_linebreaks : false,
+    force_br_newlines : true,
+    remove_trailing_nbsp : false,
+    verify_html : false,
 });

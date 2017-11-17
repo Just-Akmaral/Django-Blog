@@ -116,6 +116,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = '/static/'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static")
@@ -125,11 +126,15 @@ LOGIN_REDIRECT_URL = 'home'
 
 TINYMCE_ROOT = os.path.join(BASE_DIR, 'static/tinymce/')
 
-TINYMCE_JS_URL = os.path.join(STATIC_URL, '/tinymce/tinymce.min.js')
+TINYMCE_JS_URL = os.path.join(STATIC_URL, 'static/tinymce/tinymce.min.js')
 
-# TINYMCE_DEFAULT_CONFIG = {
-#     'plugins' :'table, spellchecker, paste, searchreplace"
-#     'theme' : "advanced",
-#     'cleanup_on_startup ':True ,
-#     'custom_undo_redo_levels':10 ,
-# }
+TINYMCE_DEFAULT_CONFIG = {
+    'plugins':  "advlist,anchor,autolink,autoresize,autosave,bbcode,charmap,code,codesample,colorpicker,contextmenu,directionality,emoticons,fullpage,fullscreen,help,hr,image,imagetools,importcss,insertdatetime,legacyoutput,link,lists,media,nonbreaking,noneditable,pagebreak,paste,preview,print,save,searchreplace,spellchecker,tabfocus,table,template,textcolor,textpattern,toc,visualblocks,visualchars,wordcount",
+    'theme':"advanced",
+    'forced_root_block': False,
+    'force_p_newlines': False,
+    'remove_linebreaks': False,
+    'force_br_newlines': True,
+    'remove_trailing_nbsp': False,
+    'verify_html': False,
+}

@@ -38,7 +38,9 @@
       <div class="col-lg-8 col-md-10 mx-auto">
         <article>
           <a class="btn btn-default" href="#"><span class="glyphicon glyphicon-pencil"></span></a>
-          <p>{{ article.article_text }}</p>
+          <div>
+              {% autoescape off %}{{ article.article_text|safe }}{% endautoescape %}
+          </div>
         </article>
         <h2>Comments</h2>
         {% if user.is_authenticated %}
@@ -69,7 +71,7 @@
                           <article>
                               <h4 class="media-heading user_name">User's name</h4>
                               <span class="meta">Posted on {{ comments.comments_date }}</span>
-                              <p>{{ comments.comments_text }}</p>
+                              <p>{{ comments.comments_text|safe }}</p>
                           </article>
                       </div>
                   {% endfor %}
