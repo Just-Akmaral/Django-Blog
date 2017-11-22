@@ -13,7 +13,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from .models import Article, Comments
 from .forms import CommentForm, PostForm, AuthenticationForm, SignUpForm
-
+from django.core.files.storage import FileSystemStorage
 
 class ArticlesView(generic.ListView):
     context_object_name = 'articles'
@@ -71,10 +71,11 @@ def addLike(request, article_id):
 @login_required(login_url='/login/')
 def add_article(request):
     if request.method == 'POST':
-        form = PostForm(request.POST)
+        form = PostForm(request.POST, request.FILES)
         if form.is_valid():
             new_article = form.save(commit=False)
             new_article.article_date = timezone.now()
+            new_article.article_background = request.FILES['article_background']
             new_article.save()
             return HttpResponseRedirect(reverse('article:article', args=(new_article.id,)))
     else:
@@ -85,10 +86,11 @@ def add_article(request):
 def edit_article(request, article_id):
     article = get_object_or_404(Article, pk=article_id)
     if request.method == "POST":
-        form = PostForm(request.POST, instance=article)
+        form = PostForm(request.POST, request.FILES, instance=article)
         if form.is_valid():
             article = form.save(commit=False)
             article.article_date = timezone.now()
+            article.article_background = request.FILES['article_background']
             article.save()
             return redirect('article:article', pk=article.id)
     else:
