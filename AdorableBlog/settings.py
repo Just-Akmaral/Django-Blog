@@ -140,3 +140,5 @@ TINYMCE_DEFAULT_CONFIG = {
     'remove_trailing_nbsp': False,
     'verify_html': False,
 }
+
+AUTH_PROFILE_MODULE = "article.Profile"

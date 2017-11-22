@@ -11,7 +11,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.views.generic.edit import FormView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-from .models import Article, Comments
+from .models import Article, Comments, Profile
 from .forms import CommentForm, PostForm, AuthenticationForm, SignUpForm
 from django.core.files.storage import FileSystemStorage
 
@@ -49,6 +49,7 @@ class ArticleView(generic.DetailView, FormView):
     def get_context_data(self, **kwargs):
         context = super(ArticleView, self).get_context_data(**kwargs)
         context['comments_list'] = Comments.objects.filter(comments_article_id=self.object)
+        #context['profile'] = Profile.objects.filter(article_author_id=self.object)
         return context
 
 
@@ -57,6 +58,7 @@ class AboutView(generic.TemplateView):
 
     def __unicode__(self):
         return self.title
+
 
 @login_required(login_url='/login/')
 def addLike(request, article_id):
@@ -68,6 +70,7 @@ def addLike(request, article_id):
         raise Http404
     return HttpResponseRedirect(reverse('article:article', args=(article.id,)))
 
+
 @login_required(login_url='/login/')
 def add_article(request):
     if request.method == 'POST':
@@ -76,11 +79,13 @@ def add_article(request):
             new_article = form.save(commit=False)
             new_article.article_date = timezone.now()
             new_article.article_background = request.FILES['article_background']
+            new_article.article_author = request.user
             new_article.save()
             return HttpResponseRedirect(reverse('article:article', args=(new_article.id,)))
     else:
         form = PostForm()
     return render(request, 'article/edit_article.html', {'form': form})
+
 
 @login_required(login_url='/login/')
 def edit_article(request, article_id):
@@ -96,6 +101,7 @@ def edit_article(request, article_id):
     else:
         form = PostForm(instance=article)
     return render(request, 'article/edit_article.html', {'form': form})
+
 
 @login_required(login_url='/login/')
 def add_comment(request, article_id):
@@ -124,7 +130,6 @@ class LoginView(LoginView):
 class LogoutView(LogoutView):
     def get_next_page(self):
         return reverse('article:articles')
-
 
 
 def signup(request):

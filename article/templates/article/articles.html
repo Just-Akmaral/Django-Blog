@@ -32,7 +32,7 @@
                       {{ article.article_subheading }}
                     </h3>
                   </a>
-                  <span class="meta">Posted on {{ article.article_date }}</span>
+                  <span class="meta">Posted by {{ article.article_author.get_full_name}} on {{ article.article_date }}</span>
                   <div class="meta">
                       <i class="fa fa-thumbs-up"></i>
                        {{ article.article_likes }}

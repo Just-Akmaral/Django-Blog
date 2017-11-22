@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -14,10 +15,29 @@ from tinymce.widgets import TinyMCE
 
 
 class Profile(models.Model):
-    class Meta():
-        db_table = "profile"
+    # class Meta():
+    #     # proxy = True
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    def get_full_name(self):
+        """
+        Returns the first_name plus the last_name, with a space in between.
+        """
+        full_name = '%s %s' % (self.first_name, self.last_name)
+        return full_name.strip()
+
+
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()
 
 
 class Article(models.Model):
@@ -30,7 +50,7 @@ class Article(models.Model):
     article_date = models.DateTimeField(timezone.now)
     article_likes = models.IntegerField(default=0)
     article_background = models.ImageField(upload_to='img/background/', default='img/background/background.jpg')
-    #article_author = models.ForeignKey(Profile)
+    article_author = models.ForeignKey(settings.AUTH_USER_MODEL)
 
     def __str__(self):
         return smart_text(self.article_title)
@@ -48,12 +68,3 @@ class Comments(models.Model):
         return self.comments_text
 
 
-@receiver(post_save, sender=User)
-def create_user_profile(sender, instance, created, **kwargs):
-    if created:
-        Profile.objects.create(user=instance)
-
-
-@receiver(post_save, sender=User)
-def save_user_profile(sender, instance, **kwargs):
-    instance.profile.save()
