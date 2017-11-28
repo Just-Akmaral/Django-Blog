@@ -34,8 +34,15 @@
                   </a>
                   <span class="meta">Posted by {{ article.article_author.get_full_name}} on {{ article.article_date }}</span>
                   <div class="meta">
-                      <i class="fa fa-thumbs-up"></i>
-                       {{ article.article_likes }}
+                      <!--<i class="fa fa-thumbs-up"></i>-->
+                      {{ article.votes.sum_rating }}
+                      {% if liked %}
+                       <i class="heart-shaped fa fa-heart" style="display: line-block"></i>
+                       <i class="heart-shaped fa fa-heart-o" style="display: none"></i>
+                       {% else %}
+                       <i class="heart-shaped fa fa-heart" style="display: none"></i>
+                       <i class="heart-shaped fa fa-heart-o" style="display: line-block"></i>
+                       {% endif %}
                   </div>
                 </div>
             {% endfor %}

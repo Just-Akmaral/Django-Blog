@@ -12,14 +12,16 @@
             <h2 class="subheading">{{ article.article_subheading }}</h2>
             <span class="meta">Posted by {{ article.article_author.get_full_name}} on {{ article.article_date }}</span>
             <span class="meta">
-              <a href="/addLike/{{ article.id }}/">
-                <span class="fa-stack fa-lg">
-                  <i class="fa fa-thumbs-up"></i>
-                   {{ article.article_likes }}
-                </span>
-              </a>
+                    <span class="fa-stack fa-lg" data-id="{{ article.id }}" data-type="article" data-action="like" title="Like">
+                        <i class="fa fa-thumbs-up"></i>
+                        <span data-count="like">{{ article.votes.likes.count }}</span>
+                    </span>
+                    <span class="fa-stack fa-lg" data-id="{{ article.id }}" data-type="article" data-action="dislike" title="Dislike">
+                        <i class="fa fa-thumbs-down"></i>
+                        <span data-count="dislike">{{ article.votes.dislikes.count }}</span>
+                    </span>
             </span>
-            {% if user.is_authenticated %}
+            {% if user.is_authenticated and user == article.article_author %}
             <span class="meta">
               <a href="/edit_article/{{ article.id }}/">
                 <span class="fa-stack fa-lg">
@@ -38,7 +40,7 @@
       <div class="col-lg-8 col-md-10 mx-auto">
         <article>
           <a class="btn btn-default" href="#"><span class="glyphicon glyphicon-pencil"></span></a>
-          <div>
+          <div style="overflow: hidden;">
               {% autoescape off %}{{ article.article_text|safe }}{% endautoescape %}
           </div>
         </article>
@@ -69,9 +71,20 @@
                   {% for comments in comments_list %}
                       <div class="row">
                           <article>
-                              <h4 class="media-heading user_name">User's name</h4>
-                              <span class="meta">Posted on {{ comments.comments_date }}</span>
+                              <!--<h4 class="media-heading user_name">User's name</h4>-->
+                              <span class="meta">Posted by {{comments.comments_author.get_full_name}} on {{ comments.comments_date }}</span>
                               <p>{{ comments.comments_text|safe }}</p>
+
+                              <span class="meta">
+                                <span class="fa-stack" data-id="{{ comments.id}}" data-type="comment" data-action="like" title="Like">
+                                    <i class="fa fa-thumbs-up"></i>
+                                    <span data-count="like">{{ comments.votes.likes.count }}</span>
+                                </span>
+                                <span class="fa-stack" data-id="{{ comments.id}}" data-type="comment" data-action="dislike" title="Dislike">
+                                    <i class="fa fa-thumbs-down"></i>
+                                    <span data-count="dislike">{{ comments.votes.dislikes.count }}</span>
+                                </span>
+                              </span>
                           </article>
                       </div>
                   {% endfor %}
