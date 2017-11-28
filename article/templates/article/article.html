@@ -2,80 +2,59 @@
 {% load staticfiles %}
 
 {% block article %}
-  <header class="masthead" style="background-image: url('/media/{{ article.article_background}}')">
-    <div class="overlay"></div>
+
     <div class="container">
       <div class="row">
-        <div class="col-lg-8 col-md-10 mx-auto">
-          <div class="post-heading">
-            <h1>{{ article.article_title }} </h1>
-            <h2 class="subheading">{{ article.article_subheading }}</h2>
-            <span class="meta">Posted by {{ article.article_author.get_full_name}} on {{ article.article_date }}</span>
-            <span class="meta">
-                    <span class="fa-stack fa-lg" data-id="{{ article.id }}" data-type="article" data-action="like" title="Like">
-                        <i class="fa fa-thumbs-up"></i>
-                        <span data-count="like">{{ article.votes.likes.count }}</span>
-                    </span>
-                    <span class="fa-stack fa-lg" data-id="{{ article.id }}" data-type="article" data-action="dislike" title="Dislike">
-                        <i class="fa fa-thumbs-down"></i>
-                        <span data-count="dislike">{{ article.votes.dislikes.count }}</span>
-                    </span>
-            </span>
-            {% if user.is_authenticated and user == article.article_author %}
-            <span class="meta">
-              <a href="/edit_article/{{ article.id }}/">
-                <span class="fa-stack fa-lg">
-                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                </span>
-              </a>
-            </span>
-            {% endif %}
-          </div>
-        </div>
-      </div>
-    </div>
-  </header>
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-8 col-md-10 mx-auto">
-        <article>
-          <a class="btn btn-default" href="#"><span class="glyphicon glyphicon-pencil"></span></a>
-          <div style="overflow: hidden;">
-              {% autoescape off %}{{ article.article_text|safe }}{% endautoescape %}
-          </div>
-        </article>
-        <h2>Comments</h2>
-        {% if user.is_authenticated %}
-          <form action="/add_comment/{{ article.id }}/"  method="post" name="sentMessage" id="contactForm" novalidate>
-            {% csrf_token %}
-                <div class="control-group">
-                  <div class="form-group floating-label-form-group controls">
-                     <label>Message</label>
-                      {% for fields in form %}
-                            {{ fields }}
-                      {% endfor %}
-                      <p class="help-block text-danger"></p>
+        <!-- Latest Posts -->
+        <main class="post blog-post col-lg-8">
+          <div class="container">
+            <div class="post-single">
+              <div class="post-thumbnail"><img src="/media/{{ article.article_background}}" alt="{{ article.article_title }}" class="img-fluid"></div>
+              <div class="post-details">
+                <h1>
+                    {{ article.article_title }}
+                    {% if user.is_authenticated and user == article.article_author %}
+                         <a href="/edit_article/{{ article.id }}/">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                         </a>
+                    {% endif %}
+                </h1>
+                <div class="post-footer d-flex align-items-center flex-column flex-sm-row"><a href="#" class="author d-flex align-items-center flex-wrap">
+                    <div class="title"><span>{{ article.article_author.get_full_name}}</span></div></a>
+                  <div class="d-flex align-items-center flex-wrap">
+                    <div class="date"><i class="icon-clock"></i>{{ article.article_date }}</div>
+                    <div class="date">
+                        <span data-id="{{ article.id }}" data-type="article" data-action="like" title="Like">
+                            <i class="fa fa-thumbs-up"></i>
+                            <span data-count="like">{{ article.votes.likes.count }}</span>
+                        </span>
+                        <span data-id="{{ article.id }}" data-type="article" data-action="dislike" title="Dislike">
+                            <i class="fa fa-thumbs-down"></i>
+                            <span data-count="dislike">{{ article.votes.dislikes.count }}</span>
+                        </span>
+                    </div>
+                    <div class="comments meta-last"><i class="icon-comment"></i>100500</div>
                   </div>
                 </div>
-                <br>
-                <div class="form-group">
-                  <button type="submit" class="btn btn-primary" id="sendMessageButton">Send</button>
+                <div class="post-body" style="overflow:hidden;">
+                  <p class="lead">{{ article.article_subheading }}</p>
+                  <p>{% autoescape off %}{{ article.article_text|safe }}{% endautoescape %}</p>
                 </div>
-          </form>
-          {% else %}
-          <p> Only authorised users can add comments </p>
-          {% endif %}
-        <hr>
-          {% if comments_list %}
-              <div class="container">
-                  {% for comments in comments_list %}
-                      <div class="row">
-                          <article>
-                              <!--<h4 class="media-heading user_name">User's name</h4>-->
-                              <span class="meta">Posted by {{comments.comments_author.get_full_name}} on {{ comments.comments_date }}</span>
-                              <p>{{ comments.comments_text|safe }}</p>
-
-                              <span class="meta">
+                <div class="post-comments">
+                  <header>
+                    <h3 class="h6">Post Comments<span class="no-of-comments"> number </span></h3>
+                  </header>
+                  {% if comments_list %}
+                    {% for comments in comments_list %}
+                      <div class="comment">
+                        <div class="comment-header d-flex justify-content-between">
+                          <div class="user d-flex align-items-center">
+                            <div class="title"><strong>{{comments.comments_author.get_full_name}}</strong><span class="date">{{ comments.comments_date }}</span></div>
+                          </div>
+                        </div>
+                        <div class="comment-body" style="margin-left:auto;">
+                          <p>{{ comments.comments_text|safe }}</p>
+                            <span class="meta">
                                 <span class="fa-stack" data-id="{{ comments.id}}" data-type="comment" data-action="like" title="Like">
                                     <i class="fa fa-thumbs-up"></i>
                                     <span data-count="like">{{ comments.votes.likes.count }}</span>
@@ -84,15 +63,41 @@
                                     <i class="fa fa-thumbs-down"></i>
                                     <span data-count="dislike">{{ comments.votes.dislikes.count }}</span>
                                 </span>
-                              </span>
-                          </article>
+                            </span>
+                        </div>
                       </div>
-                  {% endfor %}
+                    {% endfor %}
+                  {% else %}
+                    <p>No comments are available.</p>
+                  {% endif %}
+                </div>
+                <div class="add-comment">
+                  <header>
+                    <h3 class="h6">Leave a reply</h3>
+                  </header>
+                    {% if user.is_authenticated %}
+                      <form class="commenting-form" action="/add_comment/{{ article.id }}/"  method="post" name="sentMessage" id="contactForm" novalidate>
+                        {% csrf_token %}
+                            <div class="row">
+                              <div class="form-group col-md-12">
+                                  {% for fields in form %}
+                                        {{ fields }}
+                                  {% endfor %}
+                                  <p class="help-block text-danger"></p>
+                              </div>
+                            </div>
+                            <div class="form-group col-md-12">
+                              <button type="submit" class="btn btn-secondary" id="sendMessageButton">Send</button>
+                            </div>
+                      </form>
+                      {% else %}
+                      <p> Only authorised users can add comments </p>
+                      {% endif %}
+                </div>
               </div>
-          {% else %}
-                <p>No comments are available.</p>
-          {% endif %}
+            </div>
+          </div>
+        </main>
       </div>
     </div>
-</div>
 {% endblock %}

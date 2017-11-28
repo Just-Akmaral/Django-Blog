@@ -1,78 +1,123 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+<html>
+  <head>
+    <meta charset = "utf-8">
+    <meta http-equiv = "X-UA-Compatible" content = "IE=edge">
     <title>Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="all,follow">
     {% load staticfiles %}
-    <link href="{% static '/css/bootstrap-responsive.min.css' %}" rel="stylesheet"  type="text/css">
-    <link href="{% static '/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-    <link href="{% static '/vendor/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
-    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
-    <link href="{% static '/css/clean-blog.css' %}" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static '/vendor/bootstrap/css/bootstrap.min.css' %}">
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="{% static '/vendor/font-awesome/css/font-awesome.min.css' %}">
+    <!-- Custom icon font-->
+    <link rel="stylesheet" href="{% static '/css/fontastic.css' %}">
+    <!-- Google fonts - Open Sans-->
+    <link rel="stylesheet" href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,700'>
+    <!-- Fancybox-->
+    <link rel="stylesheet" href="{% static '/vendor/@fancyapps/fancybox/jquery.fancybox.min.css' %}">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="{% static '/css/style.default.css' %}" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="{% static '/css/custom.css' %}">
+
     <script type="text/javascript" src="{% static '/tinymce/tinymce.min.js' %}"></script>
-    <!--<script type="text/javascript" src="{% static '/js/fixtinymce.js' %}"></script>-->
     <script type="text/javascript" src="{% static '/js/jquery-3.2.1.js' %}"></script>
     <script type="text/javascript" src="{% static '/js/LikeDislike.js' %}"></script>
-                  {{ form.media }}
+
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js'></script>
+    <script src="{% static '/vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static '/vendor/jquery.cookie/jquery.cookie.js' %}"></script>
+    <script src="{% static '/vendor/@fancyapps/fancybox/jquery.fancybox.min.js' %}"></script>
+    <script src="{% static '/js/front.js' %}"></script>
+    {{ form.media }}
 </head>
 <body>
-<!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
-    <div class="container">
-      <a class="navbar-brand" href="{% url 'article:articles' %}"> {{request.user}} </a>
-      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-        Menu
-        <i class="fa fa-bars"></i>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'article:articles' %}">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'article:about' %}">About</a>
-          </li>
-          {% if user.is_authenticated %}
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'article:add_article' %}">Create new post</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'article:logout' %}">Log out</a>
-          </li>
-          {% else %}
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'article:login' %}">Log in</a>
-          </li>
-          {% endif %}
-        </ul>
+  <header class="header">
+    <!-- Main Navbar-->
+    <nav class="navbar navbar-expand-lg">
+      <div class="search-area">
+        <div class="search-area-inner d-flex align-items-center justify-content-center">
+          <div class="close-btn"><i class="icon-close"></i></div>
+          <div class="row d-flex justify-content-center">
+            <div class="col-md-8">
+              </form>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  </nav>
+      <div class="container">
+        <!-- Navbar Brand -->
+        <div class="navbar-header d-flex align-items-center justify-content-between">
+          <!-- Navbar Brand --><a href="{% url 'article:articles' %}" class="navbar-brand">AdorableBlog</a>
+          <!-- Toggle Button-->
+          <button type="button" data-toggle="collapse" data-target="#navbarcollapse" aria-controls="navbarcollapse" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"><span></span><span></span><span></span></button>
+        </div>
+        <!-- Navbar Menu -->
+        <div id="navbarcollapse" class="collapse navbar-collapse">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item"><a href="{% url 'article:articles' %}" class="nav-link ">Home</a>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'article:about' %}">About</a>
+            </li>
+            {% if user.is_authenticated %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'article:add_article' %}">Create new post</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'article:logout' %}">Log out</a>
+              </li>
+              {% else %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'article:login' %}">Log in</a>
+              </li>
+            {% endif %}
+          </ul>
+          <ul class="langs navbar-text"><a href="#" class="active">
+            {% if user.is_authenticated %}
+              {{request.user}}
+              {% else %}
+              Guest
+            {% endif %}
+            </a></ul>
+        </div>
+      </div>
+    </nav>
+  </header>
 
-<!-- Main Content -->
+  <!-- Main Content -->
   {% block article %}{% endblock %}
-  <hr>
 
-<!-- Footer -->
-  <footer>
+  <!-- Page Footer-->
+  <footer class="main-footer">
     <div class="container">
       <div class="row">
-        <div class="col-lg-8 col-md-10 mx-auto">
-          <ul class="list-inline text-center">
-            <li class="list-inline-item">
-              <a href="https://github.com/Just-Student/Django-Blog">
-                <span class="fa-stack fa-lg">
-                  <i class="fa fa-circle fa-stack-2x"></i>
-                  <i class="fa fa-github fa-stack-1x fa-inverse"></i>
-                </span>
-              </a>
-            </li>
-          </ul>
-          <p class="copyright text-muted">Copyright &copy; Akmaral Abilmazhit 2017</p>
+        <div class="col-md-4">
+          <div class="logo">
+            <h6 class="text-white">AdorableBlog</h6>
+          </div>
+          <div class="contact-details">
+            <p>Программирование-WEB</p>
+            <p>Абилмажит Акмарал</p>
+            <ul class="social-menu">
+              <li class="list-inline-item"><a href="https://github.com/Just-Student/Django-Blog"><i class="fa fa-github"></i></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="copyrights">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6">
+            <p>&copy; 2017. All rights reserved.</p>
+          </div>
+          <div class="col-md-6 text-right">
+            <p>Template By <a href="https://bootstraptemple.com" class="text-white">Bootstrap Temple</a>
+              <!-- Please do not remove the backlink to Bootstrap Temple unless you purchase an attribution-free license @ Bootstrap Temple or support us at http://bootstrapious.com/donate. It is part of the license conditions. Thanks for understanding :)                         -->
+            </p>
+          </div>
         </div>
       </div>
     </div>

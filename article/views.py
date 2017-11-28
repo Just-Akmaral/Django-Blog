@@ -85,6 +85,7 @@ class ArticleView(generic.DetailView, FormView):
     def get_context_data(self, **kwargs):
         context = super(ArticleView, self).get_context_data(**kwargs)
         context['comments_list'] = Comments.objects.filter(comments_article_id=self.object)
+        # 'comments_count'] = Comments.objects.filter(comments_article_id=self.object).count()
         return context
 
 
