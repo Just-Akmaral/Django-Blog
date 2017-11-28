@@ -36,7 +36,7 @@ class PostForm(ModelForm):
             'article_text': _('Add text...'),
             'article_background': _('Add background...'),
         }
-    article_background = ImageField(label=_('Background'),required=False, \
+    article_background = ImageField(label=_('Background'),required=True, \
                                     error_messages ={'invalid':_("Image files only")},\
                                     widget=FileInput)
     article_text = CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 30}))
@@ -50,8 +50,8 @@ class PostForm(ModelForm):
 
 
 class SignUpForm(UserCreationForm):
-    first_name = CharField(max_length=30, required=False, help_text='Optional.')
-    last_name = CharField(max_length=30, required=False, help_text='Optional.')
+    first_name = CharField(max_length=30, required=True, help_text='Optional')
+    last_name = CharField(max_length=30, required=True, help_text='Optional')
     email = EmailField(max_length=254, help_text='Required. Inform a valid email address.')
 
     class Meta:

@@ -33,16 +33,34 @@
                             <span data-count="dislike">{{ article.votes.dislikes.count }}</span>
                         </span>
                     </div>
-                    <div class="comments meta-last"><i class="icon-comment"></i>100500</div>
+                    <div class="comments meta-last"><i class="icon-comment"></i>{{article.comments_set.count}}</div>
                   </div>
                 </div>
                 <div class="post-body" style="overflow:hidden;">
                   <p class="lead">{{ article.article_subheading }}</p>
                   <p>{% autoescape off %}{{ article.article_text|safe }}{% endautoescape %}</p>
                 </div>
+                <div class="posts-nav d-flex justify-content-between align-items-stretch flex-column flex-md-row">
+                    {% if article.previous %}
+                        <a href="/{{article.previous.id}}/" class="prev-post text-left d-flex align-items-center">
+                            <div class="icon prev"><i class="fa fa-angle-left"></i></div>
+                            <div class="text"><strong class="text-primary">Previous Post </strong>
+                              <h6>{{article.previous}}</h6>
+                            </div>
+                        </a>
+                    {% endif %}
+                    {% if article.next %}
+                        <a href="/{{article.next.id}}/" class="next-post text-right d-flex align-items-center justify-content-end">
+                            <div class="text"><strong class="text-primary">Next Post </strong>
+                              <h6>{{article.next}}</h6>
+                            </div>
+                            <div class="icon next"><i class="fa fa-angle-right"></i></div>
+                        </a>
+                    {% endif %}
+                </div>
                 <div class="post-comments">
                   <header>
-                    <h3 class="h6">Post Comments<span class="no-of-comments"> number </span></h3>
+                    <h3 class="h6">Post Comments<span class="no-of-comments"> ({{article.comments_set.count}})</span></h3>
                   </header>
                   {% if comments_list %}
                     {% for comments in comments_list %}

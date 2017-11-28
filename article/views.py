@@ -57,7 +57,7 @@ class ArticlesView(generic.ListView):
 
     def get_queryset(self):
         articles = Article.objects.all()
-        paginator = Paginator(articles, 3)
+        paginator = Paginator(articles, 4)
         page = self.request.GET.get('page')
         try:
             articles = paginator.page(page)
@@ -77,7 +77,8 @@ class ArticleView(generic.DetailView, FormView):
     form_class = CommentForm
 
     def get_queryset(self):
-        return Article.objects.filter(article_date__lte=timezone.now())
+        article = Article.objects.filter(article_date__lte=timezone.now())
+        return article
 
     def __unicode__(self):
         return self.title
@@ -85,7 +86,6 @@ class ArticleView(generic.DetailView, FormView):
     def get_context_data(self, **kwargs):
         context = super(ArticleView, self).get_context_data(**kwargs)
         context['comments_list'] = Comments.objects.filter(comments_article_id=self.object)
-        # 'comments_count'] = Comments.objects.filter(comments_article_id=self.object).count()
         return context
 
 

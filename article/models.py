@@ -92,6 +92,17 @@ class Article(models.Model):
     def __str__(self):
         return smart_text(self.article_title)
 
+    def next(self):
+        try:
+            return Article.objects.get(pk=self.pk + 1)
+        except:
+            return None
+
+    def previous(self):
+        try:
+            return Article.objects.get(pk=self.pk - 1)
+        except:
+            return None
 
 class Comments(models.Model):
     class Meta():

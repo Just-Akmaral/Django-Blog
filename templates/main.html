@@ -4,10 +4,13 @@
     <meta charset = "utf-8">
     <meta http-equiv = "X-UA-Compatible" content = "IE=edge">
     <title>Blog</title>
+    <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="all,follow">
     {% load staticfiles %}
 
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="{% static '/vendor/bootstrap/css/bootstrap.css' %}">
     <link rel="stylesheet" href="{% static '/vendor/bootstrap/css/bootstrap.min.css' %}">
     <!-- Font Awesome CSS-->
     <link rel="stylesheet" href="{% static '/vendor/font-awesome/css/font-awesome.min.css' %}">
@@ -17,20 +20,18 @@
     <link rel="stylesheet" href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,700'>
     <!-- Fancybox-->
     <link rel="stylesheet" href="{% static '/vendor/@fancyapps/fancybox/jquery.fancybox.min.css' %}">
+
     <!-- theme stylesheet-->
     <link rel="stylesheet" href="{% static '/css/style.default.css' %}" id="theme-stylesheet">
-    <!-- Custom stylesheet - for your changes-->
-    <link rel="stylesheet" href="{% static '/css/custom.css' %}">
+
 
     <script type="text/javascript" src="{% static '/tinymce/tinymce.min.js' %}"></script>
     <script type="text/javascript" src="{% static '/js/jquery-3.2.1.js' %}"></script>
     <script type="text/javascript" src="{% static '/js/LikeDislike.js' %}"></script>
-
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js'></script>
-    <script src="{% static '/vendor/bootstrap/js/bootstrap.min.js' %}"></script>
-    <script src="{% static '/vendor/jquery.cookie/jquery.cookie.js' %}"></script>
-    <script src="{% static '/vendor/@fancyapps/fancybox/jquery.fancybox.min.js' %}"></script>
-    <script src="{% static '/js/front.js' %}"></script>
+    <script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js'></script>
+    <script type="text/javascript" src="{% static '/vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script type="text/javascript" src="{% static '/vendor/@fancyapps/fancybox/jquery.fancybox.min.js' %}"></script>
+    <script type="text/javascript" src="{% static '/js/front.js' %}"></script>
     {{ form.media }}
 </head>
 <body>
@@ -57,30 +58,34 @@
         <!-- Navbar Menu -->
         <div id="navbarcollapse" class="collapse navbar-collapse">
           <ul class="navbar-nav ml-auto">
-            <li class="nav-item"><a href="{% url 'article:articles' %}" class="nav-link ">Home</a>
+            <li class="nav-item"><a href="{% url 'article:articles' %}" class="nav-link ">Blog</a>
             </li>
             <li class="nav-item"><a class="nav-link" href="{% url 'article:about' %}">About</a>
             </li>
             {% if user.is_authenticated %}
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'article:add_article' %}">Create new post</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'article:logout' %}">Log out</a>
-              </li>
-              {% else %}
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'article:login' %}">Log in</a>
+              <li class="nav-item"><a class="nav-link" href="{% url 'article:add_article' %}">Create new post</a>
               </li>
             {% endif %}
           </ul>
-          <ul class="langs navbar-text"><a href="#" class="active">
-            {% if user.is_authenticated %}
-              {{request.user}}
+          <ul class="langs navbar-nav">
+            <li class="nav-item">
+              <a href="#" class="active">
+                {% if user.is_authenticated %}
+                  <i class="fa fa-user" aria-hidden="true"></i>
+                  {{request.user}}
+                {% else %}
+                  Hi, guest!
+                {% endif %}
+              </a>
+            </li>
+              {% if user.is_authenticated %}
+                <!--<a class="nav-link" href="{% url 'article:add_article' %}">Create new post</a>-->
+                <li class="nav-item"><a class="" href="{% url 'article:logout' %}"><i class="fa fa-sign-out" aria-hidden="true"></i> sign out</a></li>
               {% else %}
-              Guest
+                <li class="nav-item"><a class="" href="{% url 'article:login' %}"><i class="fa fa-sign-in" aria-hidden="true"></i> sign in</a></li>
+                <li class="nav-item"><a class="" href="{% url 'article:signup' %}"><i class="fa fa-user-plus" aria-hidden="true"></i> sing up</a></li>
             {% endif %}
-            </a></ul>
+          </ul>
         </div>
       </div>
     </nav>

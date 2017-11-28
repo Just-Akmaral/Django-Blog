@@ -18,13 +18,14 @@
                     <div class="post-details">
                       <div class="post-meta d-flex justify-content-between">
                         <div class="date meta-last">{{ article.article_date }}</div>
-                      </div><a href="{% url 'article:article' article.id %}">
+                      </div>
+                        <a href="{% url 'article:article' article.id %}">
                         <h3 class="h4">{{ article.article_title }}</h3></a>
                       <p class="text-muted">{{ article.article_subheading }}</p>
                       <footer class="post-footer d-flex align-items-center"><a href="#" class="author d-flex align-items-center flex-wrap">
                         <div class="title"><span>{{ article.article_author.get_full_name}}</span></div></a>
                         <div class="title"><i class="heart-shaped fa fa-heart"></i>{{ article.votes.sum_rating }}</div>
-                        <div class="comments meta-last"><i class="icon-comment"></i>100500</div>
+                        <div class="comments meta-last"><i class="icon-comment"></i>{{article.comments_set.count}}</div>
                       </footer>
                     </div>
                   </div>
