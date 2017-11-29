@@ -2,11 +2,8 @@
 {% load staticfiles %}
 
 {% block article %}
-
-    <div class="container">
-      <div class="row">
         <!-- Latest Posts -->
-        <main class="post blog-post col-lg-8">
+        <main class="post blog-post col-lg-8  mx-auto">
           <div class="container">
             <div class="post-single">
               <div class="post-thumbnail"><img src="/media/{{ article.article_background}}" alt="{{ article.article_title }}" class="img-fluid"></div>
@@ -23,8 +20,8 @@
                     <div class="title"><span>{{ article.article_author.get_full_name}}</span></div></a>
                   <div class="d-flex align-items-center flex-wrap">
                     <div class="date"><i class="icon-clock"></i>{{ article.article_date }}</div>
-                    <div class="date">
-                        <span data-id="{{ article.id }}" data-type="article" data-action="like" title="Like">
+                    <div class="comments">
+                        <span style="margin-right: 5px;" data-id="{{ article.id }}" data-type="article" data-action="like" title="Like">
                             <i class="fa fa-thumbs-up"></i>
                             <span data-count="like">{{ article.votes.likes.count }}</span>
                         </span>
@@ -38,7 +35,7 @@
                 </div>
                 <div class="post-body" style="overflow:hidden;">
                   <p class="lead">{{ article.article_subheading }}</p>
-                  <p>{% autoescape off %}{{ article.article_text|safe }}{% endautoescape %}</p>
+                  <p>{% autoescape off %}{{ article.article_text}}{% endautoescape %}</p>
                 </div>
                 <div class="posts-nav d-flex justify-content-between align-items-stretch flex-column flex-md-row">
                     {% if article.previous %}
@@ -116,6 +113,4 @@
             </div>
           </div>
         </main>
-      </div>
-    </div>
 {% endblock %}

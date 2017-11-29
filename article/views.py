@@ -120,7 +120,6 @@ def edit_article(request, article_id):
         if form.is_valid():
             article = form.save(commit=False)
             article.article_date = timezone.now()
-            article.article_background = request.FILES['article_background']
             article.save()
             return redirect('article:article', pk=article.id)
     else:

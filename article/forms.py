@@ -36,7 +36,7 @@ class PostForm(ModelForm):
             'article_text': _('Add text...'),
             'article_background': _('Add background...'),
         }
-    article_background = ImageField(label=_('Background'),required=True, \
+    article_background = ImageField(label=_('Background'),required=False, \
                                     error_messages ={'invalid':_("Image files only")},\
                                     widget=FileInput)
     article_text = CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 30}))
