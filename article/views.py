@@ -22,10 +22,8 @@ import json
 class VotesView(View):
     model = None  # Модель данных - Статьи или Комментарии
     vote_type = None  # Тип комментария Like/Dislike
-
     def post(self, request, pk):
         obj = self.model.objects.get(pk=pk)
-        # GenericForeignKey не поддерживает метод get_or_create
         try:
             likedislike = LikeDislike.objects.get(content_type=ContentType.objects.get_for_model(obj), object_id=obj.id,
                                                   user=request.user)
@@ -115,16 +113,20 @@ def add_article(request):
 @login_required(login_url='/login/')
 def edit_article(request, article_id):
     article = get_object_or_404(Article, pk=article_id)
-    if request.method == "POST":
-        form = PostForm(request.POST, request.FILES, instance=article)
-        if form.is_valid():
-            article = form.save(commit=False)
-            article.article_date = timezone.now()
-            article.save()
-            return redirect('article:article', pk=article.id)
+    author = article.article_author
+    if author == request.user:
+        if request.method == "POST":
+            form = PostForm(request.POST, request.FILES, instance=article)
+            if form.is_valid():
+                article = form.save(commit=False)
+                article.article_date = timezone.now()
+                article.save()
+                return redirect('article:article', pk=article.id)
+        else:
+            form = PostForm(instance=article)
+        return render(request, 'article/edit_article.html', {'form': form})
     else:
-        form = PostForm(instance=article)
-    return render(request, 'article/edit_article.html', {'form': form})
+        return HttpResponseRedirect(reverse('article:articles'))
 
 
 @login_required(login_url='/login/')
@@ -158,15 +160,18 @@ class LogoutView(LogoutView):
 
 
 def signup(request):
-    if request.method == 'POST':
-        form = SignUpForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
-            login(request, user)
-            return redirect('article:articles')
+    if request.user.is_authenticated():
+        return HttpResponseRedirect(reverse('article:articles'))
     else:
-        form = SignUpForm()
-    return render(request, 'article/signup.html', {'form': form})
+        if request.method == 'POST':
+            form = SignUpForm(request.POST)
+            if form.is_valid():
+                form.save()
+                username = form.cleaned_data.get('username')
+                raw_password = form.cleaned_data.get('password1')
+                user = authenticate(username=username, password=raw_password)
+                login(request, user)
+                return redirect('article:articles')
+        else:
+            form = SignUpForm()
+        return render(request, 'article/signup.html', {'form': form})

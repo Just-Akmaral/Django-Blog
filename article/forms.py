@@ -5,10 +5,8 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-
 from article.models import Comments, Article, User
 from django.core.urlresolvers import reverse
-
 from tinymce.widgets import TinyMCE
 
 
@@ -57,4 +55,3 @@ class SignUpForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('username',  'first_name', 'last_name', 'email', 'password1', 'password2', )
-

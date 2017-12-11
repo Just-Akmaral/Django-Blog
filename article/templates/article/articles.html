@@ -12,9 +12,12 @@
         <div class="row">
           {% if articles %}
               {% for article in articles %}
-                <!-- post -->
                   <div class="post col-xl-6">
-                    <div class="post-thumbnail"><a href="{% url 'article:article' article.id %}"><img src="/media/{{ article.article_background}}" alt="{{ article.article_title }}" class="img-fluid"></a></div>
+                    <div class="post-thumbnail">
+                      <a href="{% url 'article:article' article.id %}">
+                        <img src="/media/{{ article.article_background}}" alt="{{ article.article_title }}" class="img-fluid">
+                      </a>
+                    </div>
                     <div class="post-details">
                       <div class="post-meta d-flex justify-content-between">
                         <div class="date meta-last">{{ article.article_date }}</div>
@@ -32,7 +35,6 @@
                     </div>
                   </div>
               {% endfor %}
-
           {% else %}
               <p>No articles are available.</p>
           {% endif %}

@@ -79,7 +79,6 @@
               </a>
             </li>
               {% if user.is_authenticated %}
-                <!--<a class="nav-link" href="{% url 'article:add_article' %}">Create new post</a>-->
                 <li class="nav-item"><a class="" href="{% url 'article:logout' %}"><i class="fa fa-sign-out" aria-hidden="true"></i> sign out</a></li>
               {% else %}
                 <li class="nav-item"><a class="" href="{% url 'article:login' %}"><i class="fa fa-sign-in" aria-hidden="true"></i> sign in</a></li>
@@ -119,9 +118,7 @@
             <p>&copy; 2017. All rights reserved.</p>
           </div>
           <div class="col-md-6 text-right">
-            <p>Template By <a href="https://bootstraptemple.com" class="text-white">Bootstrap Temple</a>
-              <!-- Please do not remove the backlink to Bootstrap Temple unless you purchase an attribution-free license @ Bootstrap Temple or support us at http://bootstrapious.com/donate. It is part of the license conditions. Thanks for understanding :)                         -->
-            </p>
+            <p>Template By <a href="https://bootstraptemple.com" class="text-white">Bootstrap Temple</a></p>
           </div>
         </div>
       </div>

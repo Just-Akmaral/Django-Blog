@@ -21,15 +21,12 @@ class LikeDislikeManager(models.Manager):
     use_for_related_fields = True
 
     def likes(self):
-        # Забираем queryset с записями больше 0
         return self.get_queryset().filter(vote__gt=0)
 
     def dislikes(self):
-        # Забираем queryset с записями меньше 0
         return self.get_queryset().filter(vote__lt=0)
 
     def sum_rating(self):
-        # Забираем суммарный рейтинг
         return self.get_queryset().aggregate(Sum('vote')).get('vote__sum') or 0
 
     def articles(self):
@@ -104,6 +101,7 @@ class Article(models.Model):
         except:
             return None
 
+
 class Comments(models.Model):
     class Meta():
         db_table = "comments"
@@ -116,5 +114,3 @@ class Comments(models.Model):
 
     def __str__(self):
         return self.comments_text
-
-
