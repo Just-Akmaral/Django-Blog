@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset = "utf-8">
-    <meta http-equiv = "X-UA-Compatible" content = "IE=edge">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Blog</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="robots" content="all,follow">
-    {% load staticfiles %}
+    <meta name="robots" content="all,follow"> {% load staticfiles %} {% load tinymce_tags %}
 
     <!-- Bootstrap CSS-->
     <link rel="stylesheet" href="{% static '/vendor/bootstrap/css/bootstrap.css' %}">
     <link rel="stylesheet" href="{% static '/vendor/bootstrap/css/bootstrap.min.css' %}">
+
     <!-- Font Awesome CSS-->
     <link rel="stylesheet" href="{% static '/vendor/font-awesome/css/font-awesome.min.css' %}">
     <!-- Custom icon font-->
@@ -23,53 +24,55 @@
 
     <!-- theme stylesheet-->
     <link rel="stylesheet" href="{% static '/css/style.default.css' %}" id="theme-stylesheet">
-
+    <link rel="stylesheet" href="{% static '/css/calendar.css' %}">
 
     <script type="text/javascript" src="{% static '/tinymce/tinymce.min.js' %}"></script>
     <script type="text/javascript" src="{% static '/js/jquery-3.2.1.js' %}"></script>
     <script type="text/javascript" src="{% static '/js/LikeDislike.js' %}"></script>
+    <script type="text/javascript" src="{% static '/js/calendar.js' %}"></script>
     <script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js'></script>
     <script type="text/javascript" src="{% static '/vendor/bootstrap/js/bootstrap.min.js' %}"></script>
     <script type="text/javascript" src="{% static '/vendor/@fancyapps/fancybox/jquery.fancybox.min.js' %}"></script>
     <script type="text/javascript" src="{% static '/js/front.js' %}"></script>
     {{ form.media }}
 </head>
+
 <body>
-  <header class="header">
-    <!-- Main Navbar-->
-    <nav class="navbar navbar-expand-lg">
-      <div class="search-area">
-        <div class="search-area-inner d-flex align-items-center justify-content-center">
-          <div class="close-btn"><i class="icon-close"></i></div>
-          <div class="row d-flex justify-content-center">
-            <div class="col-md-8">
-              </form>
+    <header class="header">
+        <!-- Main Navbar-->
+        <nav class="navbar navbar-expand-lg">
+            <div class="search-area">
+                <div class="search-area-inner d-flex align-items-center justify-content-center">
+                    <div class="close-btn"><i class="icon-close"></i></div>
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-md-8">
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
-      <div class="container">
-        <!-- Navbar Brand -->
-        <div class="navbar-header d-flex align-items-center justify-content-between">
-          <!-- Navbar Brand --><a href="{% url 'article:articles' %}" class="navbar-brand">AdorableBlog</a>
-          <!-- Toggle Button-->
-          <button type="button" data-toggle="collapse" data-target="#navbarcollapse" aria-controls="navbarcollapse" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"><span></span><span></span><span></span></button>
-        </div>
-        <!-- Navbar Menu -->
-        <div id="navbarcollapse" class="collapse navbar-collapse">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item"><a href="{% url 'article:articles' %}" class="nav-link ">Blog</a>
-            </li>
-            <li class="nav-item"><a class="nav-link" href="{% url 'article:about' %}">About</a>
-            </li>
-            {% if user.is_authenticated %}
-              <li class="nav-item"><a class="nav-link" href="{% url 'article:add_article' %}">Create new post</a>
-              </li>
-            {% endif %}
-          </ul>
-          <ul class="langs navbar-nav">
-            <li class="nav-item">
-              <a href="#" class="active">
+            <div class="container">
+                <!-- Navbar Brand -->
+                <div class="navbar-header d-flex align-items-center justify-content-between">
+                    <!-- Navbar Brand --><a href="{% url 'article:articles' %}" class="navbar-brand">AdorableBlog</a>
+                    <!-- Toggle Button-->
+                    <button type="button" data-toggle="collapse" data-target="#navbarcollapse" aria-controls="navbarcollapse" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"><span></span><span></span><span></span></button>
+                </div>
+                <!-- Navbar Menu -->
+                <div id="navbarcollapse" class="collapse navbar-collapse">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item"><a href="{% url 'article:articles' %}" class="nav-link ">Blog</a>
+                        </li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'article:about' %}">About</a>
+                        </li>
+                        {% if user.is_authenticated %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'article:add_article' %}">Create new post</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                    <ul class="langs navbar-nav">
+                        <li class="nav-item">
+                            <a href="#" class="active">
                 {% if user.is_authenticated %}
                   <i class="fa fa-user" aria-hidden="true"></i>
                   {{request.user}}
@@ -77,52 +80,53 @@
                   Hi, guest!
                 {% endif %}
               </a>
-            </li>
-              {% if user.is_authenticated %}
-                <li class="nav-item"><a class="" href="{% url 'article:logout' %}"><i class="fa fa-sign-out" aria-hidden="true"></i> sign out</a></li>
-              {% else %}
-                <li class="nav-item"><a class="" href="{% url 'article:login' %}"><i class="fa fa-sign-in" aria-hidden="true"></i> sign in</a></li>
-                <li class="nav-item"><a class="" href="{% url 'article:signup' %}"><i class="fa fa-user-plus" aria-hidden="true"></i> sing up</a></li>
-            {% endif %}
-          </ul>
-        </div>
-      </div>
-    </nav>
-  </header>
+                        </li>
+                        {% if user.is_authenticated %}
+                        <li class="nav-item"><a class="" href="{% url 'article:logout' %}"><i class="fa fa-sign-out" aria-hidden="true"></i> sign out</a></li>
+                        {% else %}
+                        <li class="nav-item"><a class="" href="{% url 'article:login' %}"><i class="fa fa-sign-in" aria-hidden="true"></i> sign in</a></li>
+                        <li class="nav-item"><a class="" href="{% url 'article:signup' %}"><i class="fa fa-user-plus" aria-hidden="true"></i> sing up</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
 
-  <!-- Main Content -->
-  {% block article %}{% endblock %}
+    <!-- Main Content -->
+    {% block article %}{% endblock %}
 
-  <!-- Page Footer-->
-  <footer class="main-footer">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-4">
-          <div class="logo">
-            <h6 class="text-white">AdorableBlog</h6>
-          </div>
-          <div class="contact-details">
-            <p>Программирование-WEB</p>
-            <p>Абилмажит Акмарал</p>
-            <ul class="social-menu">
-              <li class="list-inline-item"><a href="https://github.com/Just-Student/Django-Blog"><i class="fa fa-github"></i></a></li>
-            </ul>
-          </div>
+    <!-- Page Footer-->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="logo">
+                        <h6 class="text-white">AdorableBlog</h6>
+                    </div>
+                    <div class="contact-details">
+                        <p>Программирование-WEB</p>
+                        <p>Абилмажит Акмарал</p>
+                        <ul class="social-menu">
+                            <li class="list-inline-item"><a href="https://github.com/Just-Student/Django-Blog"><i class="fa fa-github"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-    <div class="copyrights">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-6">
-            <p>&copy; 2017. All rights reserved.</p>
-          </div>
-          <div class="col-md-6 text-right">
-            <p>Template By <a href="https://bootstraptemple.com" class="text-white">Bootstrap Temple</a></p>
-          </div>
+        <div class="copyrights">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p>&copy; 2017. All rights reserved.</p>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <p>Template By <a href="https://bootstraptemple.com" class="text-white">Bootstrap Temple</a></p>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </footer>
+    </footer>
 </body>
+
 </html>

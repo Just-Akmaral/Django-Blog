@@ -1,115 +1,121 @@
-{% extends 'main.html' %}
-{% load staticfiles %}
-
-{% block article %}
-        <main class="post blog-post col-lg-8  mx-auto">
-          <div class="container">
-            <div class="post-single">
-              <div class="post-thumbnail"><img src="/media/{{ article.article_background}}" alt="{{ article.article_title }}" class="img-fluid"></div>
-              <div class="post-details">
+{% extends 'main.html' %} {% load staticfiles %} {% load bbcode_tags %} {% bbcode entry.bbcode_content %} {% block article %}
+<main class="post blog-post col-lg-8  mx-auto">
+    <div class="container">
+        <div class="post-single">
+            <div class="post-thumbnail"><img src="/media/{{ article.article_background}}" alt="{{ article.article_title }}" class="img-fluid"></div>
+            <div class="post-details">
                 <h1>
-                    {{ article.article_title }}
-                    {% if user.is_authenticated and user == article.article_author %}
-                         <a href="/edit_article/{{ article.id }}/">
-                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                         </a>
+                    {{ article.article_title }} {% if user.is_authenticated and user == article.article_author %}
+                    <a href="/edit_article/{{ article.id }}/">
+                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    </a>
                     {% endif %}
                 </h1>
-                <div class="post-footer d-flex align-items-center flex-column flex-sm-row"><a href="#" class="author d-flex align-items-center flex-wrap">
-                    <div class="title"><span>{{ article.article_author.get_full_name}}</span></div></a>
-                  <div class="d-flex align-items-center flex-wrap">
-                    <div class="date"><i class="icon-clock"></i>{{ article.article_date }}</div>
-                    <div class="comments">
-                        <span style="margin-right: 5px;" data-id="{{ article.id }}" data-type="article" data-action="like" title="Like">
+                <div class="post-footer d-flex align-items-center flex-column flex-sm-row">
+                    <a href="#" class="author d-flex align-items-center flex-wrap">
+                        <div class="title"><span>{{ article.article_author.get_full_name}}</span></div>
+                    </a>
+                    <div class="d-flex align-items-center flex-wrap">
+                        <div class="date"><i class="icon-clock"></i>{{ article.article_date }}</div>
+                        <div class="comments">
+                            <span style="margin-right: 5px;" data-id="{{ article.id }}" data-type="article" data-action="like" title="Like">
                             <i class="fa fa-thumbs-up"></i>
                             <span data-count="like">{{ article.votes.likes.count }}</span>
-                        </span>
-                        <span data-id="{{ article.id }}" data-type="article" data-action="dislike" title="Dislike">
+                            </span>
+                            <span data-id="{{ article.id }}" data-type="article" data-action="dislike" title="Dislike">
                             <i class="fa fa-thumbs-down"></i>
                             <span data-count="dislike">{{ article.votes.dislikes.count }}</span>
-                        </span>
+                            </span>
+                        </div>
+                        <div class="comments meta-last"><i class="icon-comment"></i>{{article.comments_set.count}}</div>
                     </div>
-                    <div class="comments meta-last"><i class="icon-comment"></i>{{article.comments_set.count}}</div>
-                  </div>
                 </div>
                 <div class="post-body" style="overflow:hidden;">
-                  <p class="lead">{{ article.article_subheading }}</p>
-                  <p>{% autoescape off %}{{ article.article_text}}{% endautoescape %}</p>
+                    <p class="lead">{{ article.article_subheading }}</p>
+                    <!-- {% autoescape off %} {{ article.article_text | bbcode | safe }} {% endautoescape %} -->
+
+                    <!-- {% autoescape off %} {{ article.article_text | safe| bbcode}}{% endautoescape %} -->
+                    <!-- {% with text=article.article_text|safe %} {{text|bbcode}}{% endwith %} -->
+                    {{ article.article_text | safe}}
                 </div>
+                <!-- <script>
+                    document.getElementById('iframe1').contentWindow.document.write("{{article.article_text}}");
+                </script> -->
                 <div class="posts-nav d-flex justify-content-between align-items-stretch flex-column flex-md-row">
                     {% if article.previous %}
-                        <a href="/{{article.previous.id}}/" class="prev-post text-left d-flex align-items-center">
-                            <div class="icon prev"><i class="fa fa-angle-left"></i></div>
-                            <div class="text"><strong class="text-primary">Previous Post </strong>
-                              <h6>{{article.previous}}</h6>
-                            </div>
-                        </a>
-                    {% endif %}
-                    {% if article.next %}
-                        <a href="/{{article.next.id}}/" class="next-post text-right d-flex align-items-center justify-content-end">
-                            <div class="text"><strong class="text-primary">Next Post </strong>
-                              <h6>{{article.next}}</h6>
-                            </div>
-                            <div class="icon next"><i class="fa fa-angle-right"></i></div>
-                        </a>
+                    <a href="/{{article.previous.id}}/" class="prev-post text-left d-flex align-items-center">
+                        <div class="icon prev"><i class="fa fa-angle-left"></i></div>
+                        <div class="text"><strong class="text-primary">Previous Post </strong>
+                            <h6>{{article.previous}}</h6>
+                        </div>
+                    </a>
+                    {% endif %} {% if article.next %}
+                    <a href="/{{article.next.id}}/" class="next-post text-right d-flex align-items-center justify-content-end">
+                        <div class="text"><strong class="text-primary">Next Post </strong>
+                            <h6>{{article.next}}</h6>
+                        </div>
+                        <div class="icon next"><i class="fa fa-angle-right"></i></div>
+                    </a>
                     {% endif %}
                 </div>
+
+                <div class="">
+                    <h6>Все теги: {% for keyword in article.keywords.all %}
+                        <a href="/keyword/{{ keyword.id }}">{{ keyword.name }}</a> {% if not forloop.last %}, {% endif %} {% endfor %}
+                    </h6>
+                </div>
                 <div class="post-comments">
-                  <header>
-                    <h3 class="h6">Post Comments<span class="no-of-comments"> ({{article.comments_set.count}})</span></h3>
-                  </header>
-                  {% if comments_list %}
-                    {% for comments in comments_list %}
-                      <div class="comment">
+                    <header>
+                        <h3 class="h6">Post Comments<span class="no-of-comments"> ({{article.comments_set.count}})</span></h3>
+                    </header>
+                    {% if comments_list %} {% for comments in comments_list %}
+                    <div class="comment">
                         <div class="comment-header d-flex justify-content-between">
-                          <div class="user d-flex align-items-center">
-                            <div class="title"><strong>{{comments.comments_author.get_full_name}}</strong><span class="date">{{ comments.comments_date }}</span></div>
-                          </div>
+                            <div class="user d-flex align-items-center">
+                                <div class="title"><strong>{{comments.comments_author.get_full_name}}</strong><span class="date">{{ comments.comments_date }}</span></div>
+                            </div>
                         </div>
                         <div class="comment-body" style="margin-left:auto;">
-                          <p>{{ comments.comments_text|safe }}</p>
+                            <p>{{ comments.comments_text|safe }}</p>
                             <span class="meta">
                                 <span class="fa-stack" data-id="{{ comments.id}}" data-type="comment" data-action="like" title="Like">
                                     <i class="fa fa-thumbs-up"></i>
                                     <span data-count="like">{{ comments.votes.likes.count }}</span>
-                                </span>
-                                <span class="fa-stack" data-id="{{ comments.id}}" data-type="comment" data-action="dislike" title="Dislike">
+                            </span>
+                            <span class="fa-stack" data-id="{{ comments.id}}" data-type="comment" data-action="dislike" title="Dislike">
                                     <i class="fa fa-thumbs-down"></i>
                                     <span data-count="dislike">{{ comments.votes.dislikes.count }}</span>
-                                </span>
+                            </span>
                             </span>
                         </div>
-                      </div>
-                    {% endfor %}
-                  {% else %}
+                    </div>
+                    {% endfor %} {% else %}
                     <p>No comments are available.</p>
-                  {% endif %}
+                    {% endif %}
                 </div>
                 <div class="add-comment">
-                  <header>
-                    <h3 class="h6">Leave a reply</h3>
-                  </header>
+                    <header>
+                        <h3 class="h6">Leave a reply</h3>
+                    </header>
                     {% if user.is_authenticated %}
-                      <form class="commenting-form" action="/add_comment/{{ article.id }}/"  method="post" name="sentMessage" id="contactForm" novalidate>
+                    <form class="commenting-form" action="/add_comment/{{ article.id }}/" method="post" name="sentMessage" id="contactForm" novalidate>
                         {% csrf_token %}
-                            <div class="row">
-                              <div class="form-group col-md-12">
-                                  {% for fields in form %}
-                                        {{ fields }}
-                                  {% endfor %}
-                                  <p class="help-block text-danger"></p>
-                              </div>
-                            </div>
+                        <div class="row">
                             <div class="form-group col-md-12">
-                              <button type="submit" class="btn btn-secondary" id="sendMessageButton">Send</button>
+                                {% for fields in form %} {{ fields }} {% endfor %}
+                                <p class="help-block text-danger"></p>
                             </div>
-                      </form>
-                      {% else %}
-                      <p> Only authorised users can add comments </p>
-                      {% endif %}
+                        </div>
+                        <div class="form-group col-md-12">
+                            <button type="submit" class="btn btn-secondary" id="sendMessageButton">Send</button>
+                        </div>
+                    </form>
+                    {% else %}
+                    <p> Only authorised users can add comments </p>
+                    {% endif %}
                 </div>
-              </div>
             </div>
-          </div>
-        </main>
+        </div>
+    </div>
+</main>
 {% endblock %}

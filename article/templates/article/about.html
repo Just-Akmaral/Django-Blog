@@ -1,50 +1,59 @@
-{% extends 'main.html' %}
-{% load staticfiles %}
-
-{% block article %}
-    <section style="background: url('/static/img/hero.jpg'); background-size: cover; background-position: center center" class="hero">
-      <div class="container">
+{% extends 'main.html' %} {% load staticfiles %} {% block article %}
+<section style="background: url('/static/img/hero.jpg'); background-size: cover; background-position: center center" class="hero">
+    <div class="container">
         <div class="row">
-          <div class="col-lg-7">
-            <h1>Blog for WEB course</h1><a href="#intro" class="hero-link">Discover More</a>
-          </div>
+            <div class="col-lg-7">
+                <h1>Blog for WEB course</h1><a href="#intro" class="hero-link">Discover More</a>
+            </div>
         </div>
-      </div>
-    </section>
-    <section class="intro" id = "intro">
-      <div class="container">
+    </div>
+</section>
+<section class="intro" id="intro">
+    <div class="container">
         <div class="row">
-          <div class="col-lg-8">
-            <h2 class="h3">Основные библиотеки</h2>
-            <p class="text-big">Приложение <strong>Блог</strong> было создано с использованием:
-              <ul class="list-group">
-                <li class="list-group-item">Django</li>
-                <li class="list-group-item">Bootstrap</li>
-                <li class="list-group-item">Tinymce для редактирования статей</li>
-                <li class="list-group-item">Pillow для загрузки изображений</li>
-              </ul>
-          </div>
+            <div class="col-lg-8">
+                <h2 class="h3">Основные библиотеки</h2>
+                <p class="text-big">Приложение <strong>Блог</strong> было создано с использованием:
+                    <ul class="list-group">
+                        <li class="list-group-item">Django</li>
+                        <li class="list-group-item">Bootstrap</li>
+                        <li class="list-group-item">Tinymce для редактирования статей</li>
+                        <li class="list-group-item">Pillow для загрузки изображений</li>
+                    </ul>
+            </div>
         </div>
-      </div>
-    </section>
-    <section class="gallery no-padding">
-      <div class="row">
+    </div>
+</section>
+<section class="gallery no-padding">
+    <div class="row">
         <div class="mix col-lg-3 col-md-3 col-sm-6">
-          <div class="item"><a href="{% static '/img/gallery-1.jpg' %}" data-fancybox="gallery" class="image"><img src="{% static '/img/gallery-1.jpg' %}" alt="..." class="img-fluid">
-              <div class="overlay d-flex align-items-center justify-content-center"><i class="icon-search"></i></div></a></div>
-        </div>
-        <div class="mix col-lg-3 col-md-3 col-sm-6">
-          <div class="item"><a href="{% static '/img/gallery-2.jpg' %}" data-fancybox="gallery" class="image"><img src="{% static '/img/gallery-2.jpg' %}" alt="..." class="img-fluid">
-              <div class="overlay d-flex align-items-center justify-content-center"><i class="icon-search"></i></div></a></div>
-        </div>
-        <div class="mix col-lg-3 col-md-3 col-sm-6">
-          <div class="item"><a href="{% static '/img/gallery-3.jpg' %}" data-fancybox="gallery" class="image"><img src="{% static '/img/gallery-3.jpg' %}" alt="..." class="img-fluid">
-              <div class="overlay d-flex align-items-center justify-content-center"><i class="icon-search"></i></div></a></div>
+            <div class="item">
+                <a href="{% static '/img/gallery-1.jpg' %}" data-fancybox="gallery" class="image"><img src="{% static '/img/gallery-1.jpg' %}" alt="..." class="img-fluid">
+                    <div class="overlay d-flex align-items-center justify-content-center"><i class="icon-search"></i></div>
+                </a>
+            </div>
         </div>
         <div class="mix col-lg-3 col-md-3 col-sm-6">
-          <div class="item"><a href="{% static '/img/gallery-4.jpg' %}" data-fancybox="gallery" class="image"><img src="{% static '/img/gallery-4.jpg' %}" alt="..." class="img-fluid">
-              <div class="overlay d-flex align-items-center justify-content-center"><i class="icon-search"></i></div></a></div>
+            <div class="item">
+                <a href="{% static '/img/gallery-2.jpg' %}" data-fancybox="gallery" class="image"><img src="{% static '/img/gallery-2.jpg' %}" alt="..." class="img-fluid">
+                    <div class="overlay d-flex align-items-center justify-content-center"><i class="icon-search"></i></div>
+                </a>
+            </div>
         </div>
-      </div>
-    </section>
+        <div class="mix col-lg-3 col-md-3 col-sm-6">
+            <div class="item">
+                <a href="{% static '/img/gallery-3.jpg' %}" data-fancybox="gallery" class="image"><img src="{% static '/img/gallery-3.jpg' %}" alt="..." class="img-fluid">
+                    <div class="overlay d-flex align-items-center justify-content-center"><i class="icon-search"></i></div>
+                </a>
+            </div>
+        </div>
+        <div class="mix col-lg-3 col-md-3 col-sm-6">
+            <div class="item">
+                <a href="{% static '/img/gallery-4.jpg' %}" data-fancybox="gallery" class="image"><img src="{% static '/img/gallery-4.jpg' %}" alt="..." class="img-fluid">
+                    <div class="overlay d-flex align-items-center justify-content-center"><i class="icon-search"></i></div>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}

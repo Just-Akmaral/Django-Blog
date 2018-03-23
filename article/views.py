@@ -10,18 +10,20 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.forms import AuthenticationForm
 from django.views.generic.edit import FormView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from .models import Article, Comments, Profile, LikeDislike
+from .models import Article, Comments, Profile, LikeDislike, KeyWords
 from .forms import CommentForm, PostForm, AuthenticationForm, SignUpForm
 from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse
 from django.views import View
 from django.contrib.contenttypes.models import ContentType
 import json
+import calendar
+from django.http import JsonResponse
 
 
 class VotesView(View):
-    model = None  # Модель данных - Статьи или Комментарии
-    vote_type = None  # Тип комментария Like/Dislike
+    model = None
+    vote_type = None
     def post(self, request, pk):
         obj = self.model.objects.get(pk=pk)
         try:
@@ -52,6 +54,7 @@ class VotesView(View):
 class ArticlesView(generic.ListView):
     context_object_name = 'articles'
     template_name = 'article/articles.html'
+    cal = calendar.calendar(2025,2,1,5)
 
     def get_queryset(self):
         articles = Article.objects.all()
@@ -64,6 +67,11 @@ class ArticlesView(generic.ListView):
         except EmptyPage:
             articles = paginator.page(paginator.num_pages)
         return articles
+
+    def get_context_data(self, **kwargs):
+        context = super(ArticlesView, self).get_context_data(**kwargs)
+        context['keywords_list'] = KeyWords.objects.all()
+        return context
 
     def __unicode__(self):
         return self.title
@@ -84,6 +92,13 @@ class ArticleView(generic.DetailView, FormView):
     def get_context_data(self, **kwargs):
         context = super(ArticleView, self).get_context_data(**kwargs)
         context['comments_list'] = Comments.objects.filter(comments_article_id=self.object)
+        # context['keyw_s'] = KeyWords.objects.get(pk=pk)
+        # context['articles'] = Article.objects.filter(keywords__name__exact=context['keyw_s'])
+        # print('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&')
+        # print(self)
+        # print(self.objects.filter(keywords))
+        # print(self.keywords)
+        # context['keywords_list'] = KeyWords.objects.filter(id=self.object.keywords)
         return context
 
 
@@ -107,7 +122,7 @@ def add_article(request):
             return HttpResponseRedirect(reverse('article:article', args=(new_article.id,)))
     else:
         form = PostForm()
-    return render(request, 'article/edit_article.html', {'form': form})
+    return render(request, 'article/edit_article.html', {'form': form, 'keywords': KeyWords.objects.all()})
 
 
 @login_required(login_url='/login/')
@@ -124,7 +139,7 @@ def edit_article(request, article_id):
                 return redirect('article:article', pk=article.id)
         else:
             form = PostForm(instance=article)
-        return render(request, 'article/edit_article.html', {'form': form})
+        return render(request, 'article/edit_article.html', {'form': form,'keywords': KeyWords.objects.all()})
     else:
         return HttpResponseRedirect(reverse('article:articles'))
 
@@ -142,7 +157,7 @@ def add_comment(request, article_id):
     else:
         form = CommentForm(instance=request.comments)
     return render(request, 'article/article.html', {
-        'form': form
+        'form': form, 'keywords': KeyWords.objects.all()
     })
 
 
@@ -175,3 +190,25 @@ def signup(request):
         else:
             form = SignUpForm()
         return render(request, 'article/signup.html', {'form': form})
+
+def keywords(request, pk):
+    args = {}
+
+    args['keywords'] = KeyWords.objects.all()
+    args['keyw_s'] = KeyWords.objects.get(pk=pk)
+    args['articles'] = Article.objects.filter(keywords__name__exact=args['keyw_s'])
+    return render(request, 'article/keywpage.html', args)
+
+def calendar_info(request):
+    articles = Article.objects.filter(article_date__lte=timezone.now()).order_by('article_date').values('article_date', 'article_title', 'id')
+    articles_list = list(articles)
+
+    data = []
+    for article in articles_list:
+        data.append([
+            '{dt.day}/{dt.month}/{dt.year}'.format(dt=article['article_date']),
+            article['article_title'],
+            str(article['id']),
+            '#0BA1BF'
+        ])
+    return JsonResponse(data, safe=False)

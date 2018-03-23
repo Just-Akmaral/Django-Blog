@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'tinymce',
+    'precise_bbcode',
 ]
 
 MIDDLEWARE = [
@@ -131,7 +132,7 @@ TINYMCE_ROOT = os.path.join(BASE_DIR, 'static/tinymce/')
 TINYMCE_JS_URL = os.path.join(STATIC_URL, 'static/tinymce/tinymce.min.js')
 
 TINYMCE_DEFAULT_CONFIG = {
-    'plugins':  "advlist,anchor,autolink,autoresize,autosave,bbcode,charmap,code,codesample,colorpicker,contextmenu,directionality,emoticons,fullpage,fullscreen,help,hr,image,imagetools,importcss,insertdatetime,legacyoutput,link,lists,media,nonbreaking,noneditable,pagebreak,paste,preview,print,save,searchreplace,spellchecker,tabfocus,table,template,textcolor,textpattern,toc,visualblocks,visualchars,wordcount",
+    'plugins': 'print preview fullpage powerpaste searchreplace autolink directionality advcode visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists textcolor wordcount tinymcespellchecker a11ychecker imagetools mediaembed  linkchecker contextmenu colorpicker textpattern help',
     'theme':"advanced",
     'forced_root_block': False,
     'force_p_newlines': False,
@@ -139,6 +140,8 @@ TINYMCE_DEFAULT_CONFIG = {
     'force_br_newlines': True,
     'remove_trailing_nbsp': False,
     'verify_html': False,
+    'file_browser_callback_types': 'file image media',
+ 
 }
 
 AUTH_PROFILE_MODULE = "article.Profile"

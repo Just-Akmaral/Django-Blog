@@ -3,11 +3,8 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.encoding import smart_text
-from datetime import datetime
-import datetime
 from django.utils import timezone
 from django.contrib.auth.models import User
-from pip._vendor.requests import auth
 from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
@@ -15,6 +12,14 @@ from django.db.models import Sum
 from tinymce.models import HTMLField
 from tinymce import models as tinymce_model
 from tinymce.widgets import TinyMCE
+
+class KeyWords(models.Model):
+    class Meta():
+        db_table = 'keywords'
+    name = models.CharField(max_length=50, unique=True, verbose_name='Теги')
+
+    def __str__(self):
+        return self.name
 
 
 class LikeDislikeManager(models.Manager):
@@ -85,6 +90,8 @@ class Article(models.Model):
     article_background = models.ImageField(upload_to='img/background/', default='img/background/background.jpg')
     article_author = models.ForeignKey(settings.AUTH_USER_MODEL)
     votes = GenericRelation(LikeDislike, related_query_name='articles')
+    keywords = models.ManyToManyField(KeyWords, related_name="keywords", related_query_name="keyword",
+                                       verbose_name=u'Теги')
 
     def __str__(self):
         return smart_text(self.article_title)

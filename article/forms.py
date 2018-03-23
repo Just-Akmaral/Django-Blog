@@ -22,7 +22,7 @@ class CommentForm(ModelForm):
 class PostForm(ModelForm):
     class Meta:
         model = Article
-        fields = ['article_title', 'article_subheading','article_text','article_background',]
+        fields = ['article_title', 'article_subheading','article_text','article_background','keywords']
         widgets = {
             'article_title': TextInput(attrs={'class': 'form-control','placeholder': 'Add title...'}),
             'article_subheading': TextInput(attrs={'class': 'form-control','placeholder': 'Add subheading...'}),

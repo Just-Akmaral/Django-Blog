@@ -1,31 +1,29 @@
-{% extends 'main.html' %}
-{% load staticfiles %}
-{% block article %}
+{% extends 'main.html' %} {% load staticfiles %} {% block article %}
 <section>
     <div class="container">
-    	<div class="row">
-    	    <div class="col-xs-12">
-        	    <div class="form-wrap">
-                  <h2>Sign up</h2>
-                  <form method="post">
-                    {% csrf_token %}
-                    {% for field in form %}
-                      <p>
-                        {{ field.label_tag }}<br>
-                        {{ field }}
-                        {% for error in field.errors %}
-                          <p style="color: red">{{ error }}</p>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-wrap">
+                    <h2>Sign up</h2>
+                    <form method="post">
+                        {% csrf_token %} {% for field in form %}
+                        <p>
+                            {{ field.label_tag }}<br> {{ field }} {% for error in field.errors %}
+                            <p style="color: red">{{ error }}</p>
+                            {% endfor %}
+                        </p>
                         {% endfor %}
-                      </p>
-                    {% endfor %}
-                    <div class="form-group">
-                      <button type="submit" class="btn btn-secondary">Sign up</button>
-                    </div>
-                  </form>
-                  <a href="{% url 'article:login' %}" class="forget">Already has account?</a>
-       	        </div>
-    		</div> <!-- /.col-xs-12 -->
-    	</div> <!-- /.row -->
-    </div> <!-- /.container -->
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-secondary">Sign up</button>
+                        </div>
+                    </form>
+                    <a href="{% url 'article:login' %}" class="forget">Already has account?</a>
+                </div>
+            </div>
+            <!-- /.col-xs-12 -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container -->
 </section>
 {% endblock %}

@@ -666,7 +666,7 @@ section.hero .continue i {
 *     FEATURED POSTS SECTION
 * ==========================================================
 */
-section.featured-posts .row:nth-of-type(odd) .text {
+a .row:nth-of-type(odd) .text {
   background: #fafafa;
 }
 
