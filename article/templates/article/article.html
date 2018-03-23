@@ -32,15 +32,8 @@
                 </div>
                 <div class="post-body" style="overflow:hidden;">
                     <p class="lead">{{ article.article_subheading }}</p>
-                    <!-- {% autoescape off %} {{ article.article_text | bbcode | safe }} {% endautoescape %} -->
-
-                    <!-- {% autoescape off %} {{ article.article_text | safe| bbcode}}{% endautoescape %} -->
-                    <!-- {% with text=article.article_text|safe %} {{text|bbcode}}{% endwith %} -->
                     {{ article.article_text | safe}}
                 </div>
-                <!-- <script>
-                    document.getElementById('iframe1').contentWindow.document.write("{{article.article_text}}");
-                </script> -->
                 <div class="posts-nav d-flex justify-content-between align-items-stretch flex-column flex-md-row">
                     {% if article.previous %}
                     <a href="/{{article.previous.id}}/" class="prev-post text-left d-flex align-items-center">
@@ -60,8 +53,8 @@
                 </div>
 
                 <div class="">
-                    <h6>Все теги: {% for keyword in article.keywords.all %}
-                        <a href="/keyword/{{ keyword.id }}">{{ keyword.name }}</a> {% if not forloop.last %}, {% endif %} {% endfor %}
+                    <h6>Все теги: {% for tag in article.tags.all %}
+                        <a href="/tag/{{ tag.id }}">{{ tag.name }}</a> {% if not forloop.last %}, {% endif %} {% endfor %}
                     </h6>
                 </div>
                 <div class="post-comments">

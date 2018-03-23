@@ -13,9 +13,9 @@ from tinymce.models import HTMLField
 from tinymce import models as tinymce_model
 from tinymce.widgets import TinyMCE
 
-class KeyWords(models.Model):
+class Tags(models.Model):
     class Meta():
-        db_table = 'keywords'
+        db_table = 'tags'
     name = models.CharField(max_length=50, unique=True, verbose_name='Теги')
 
     def __str__(self):
@@ -90,7 +90,7 @@ class Article(models.Model):
     article_background = models.ImageField(upload_to='img/background/', default='img/background/background.jpg')
     article_author = models.ForeignKey(settings.AUTH_USER_MODEL)
     votes = GenericRelation(LikeDislike, related_query_name='articles')
-    keywords = models.ManyToManyField(KeyWords, related_name="keywords", related_query_name="keyword",
+    tags = models.ManyToManyField(Tags, related_name="tags", related_query_name="tag",
                                        verbose_name=u'Теги')
 
     def __str__(self):

@@ -74,8 +74,8 @@
                 </div>
             </div>
             <div class="">
-                <p>Все теги: {% for keyword in keywords_list %}
-                    <a href="/keyword/{{ keyword.id }}">{{ keyword.name }}</a> {% if not forloop.last %}, {% endif %} {% endfor %}
+                <p>Все теги: {% for tag in tags_list %}
+                    <a href="/tag/{{ tag.id }}">{{ tag.name }}</a> {% if not forloop.last %}, {% endif %} {% endfor %}
                 </p>
             </div>
         </aside>

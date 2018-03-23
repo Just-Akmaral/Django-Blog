@@ -10,7 +10,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.forms import AuthenticationForm
 from django.views.generic.edit import FormView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from .models import Article, Comments, Profile, LikeDislike, KeyWords
+from .models import Article, Comments, Profile, LikeDislike, Tags
 from .forms import CommentForm, PostForm, AuthenticationForm, SignUpForm
 from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse
@@ -70,7 +70,7 @@ class ArticlesView(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super(ArticlesView, self).get_context_data(**kwargs)
-        context['keywords_list'] = KeyWords.objects.all()
+        context['tags_list'] = Tags.objects.all()
         return context
 
     def __unicode__(self):
@@ -92,13 +92,13 @@ class ArticleView(generic.DetailView, FormView):
     def get_context_data(self, **kwargs):
         context = super(ArticleView, self).get_context_data(**kwargs)
         context['comments_list'] = Comments.objects.filter(comments_article_id=self.object)
-        # context['keyw_s'] = KeyWords.objects.get(pk=pk)
-        # context['articles'] = Article.objects.filter(keywords__name__exact=context['keyw_s'])
+        # context['keyw_s'] = tags.objects.get(pk=pk)
+        # context['articles'] = Article.objects.filter(tags__name__exact=context['keyw_s'])
         # print('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&')
         # print(self)
-        # print(self.objects.filter(keywords))
-        # print(self.keywords)
-        # context['keywords_list'] = KeyWords.objects.filter(id=self.object.keywords)
+        # print(self.objects.filter(tags))
+        # print(self.tags)
+        # context['tags_list'] = tags.objects.filter(id=self.object.tags)
         return context
 
 
@@ -122,7 +122,7 @@ def add_article(request):
             return HttpResponseRedirect(reverse('article:article', args=(new_article.id,)))
     else:
         form = PostForm()
-    return render(request, 'article/edit_article.html', {'form': form, 'keywords': KeyWords.objects.all()})
+    return render(request, 'article/edit_article.html', {'form': form, 'tags': tags.objects.all()})
 
 
 @login_required(login_url='/login/')
@@ -139,7 +139,7 @@ def edit_article(request, article_id):
                 return redirect('article:article', pk=article.id)
         else:
             form = PostForm(instance=article)
-        return render(request, 'article/edit_article.html', {'form': form,'keywords': KeyWords.objects.all()})
+        return render(request, 'article/edit_article.html', {'form': form,'tags': tags.objects.all()})
     else:
         return HttpResponseRedirect(reverse('article:articles'))
 
@@ -157,7 +157,7 @@ def add_comment(request, article_id):
     else:
         form = CommentForm(instance=request.comments)
     return render(request, 'article/article.html', {
-        'form': form, 'keywords': KeyWords.objects.all()
+        'form': form, 'tags': tags.objects.all()
     })
 
 
@@ -191,13 +191,13 @@ def signup(request):
             form = SignUpForm()
         return render(request, 'article/signup.html', {'form': form})
 
-def keywords(request, pk):
+def tags(request, pk):
     args = {}
 
-    args['keywords'] = KeyWords.objects.all()
-    args['keyw_s'] = KeyWords.objects.get(pk=pk)
-    args['articles'] = Article.objects.filter(keywords__name__exact=args['keyw_s'])
-    return render(request, 'article/keywpage.html', args)
+    args['tags'] = Tags.objects.all()
+    args['keyw_s'] = Tags.objects.get(pk=pk)
+    args['articles'] = Article.objects.filter(tags__name__exact=args['keyw_s'])
+    return render(request, 'article/tags.html', args)
 
 def calendar_info(request):
     articles = Article.objects.filter(article_date__lte=timezone.now()).order_by('article_date').values('article_date', 'article_title', 'id')

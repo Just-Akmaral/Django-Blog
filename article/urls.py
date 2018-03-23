@@ -30,6 +30,6 @@ urlpatterns = [
     url(r'^comment/(?P<pk>\d+)/dislike/$',
         login_required(views.VotesView.as_view(model=Comments, vote_type=LikeDislike.DISLIKE)),
         name='comment_dislike'),
-    url(r'^keyword/(?P<pk>\d+)/$', views.keywords),
+    url(r'^tag/(?P<pk>\d+)/$', views.tags),
     url(r'^get_calendar_info/$', views.calendar_info, name='calendar_info'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
