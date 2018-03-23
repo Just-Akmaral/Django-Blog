@@ -1,6 +1,5 @@
-**/__pycache__/
-**/migrations/
-article\__pycache__
+__pycache__/*
+migrations/*
 settings.py
 .idea/
 .gitignore
